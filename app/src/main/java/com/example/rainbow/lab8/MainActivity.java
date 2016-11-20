@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         //短按item
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long idp) {
                 final LayoutInflater factory = LayoutInflater.from(MainActivity.this);
                 View contentView = factory.inflate(R.layout.dialoglayout, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -69,6 +71,44 @@ public class MainActivity extends AppCompatActivity {
                 bd_edit.setText(this_bd);
                 gift_edit.setText(this_gift);
 
+                String number = new String();
+                TextView tel_text = (TextView)contentView.findViewById(R.id.tel_text);
+                Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
+                        null,null,null,null);
+                while (cursor.moveToNext()){
+                    String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    String name = cursor.getString(
+                            cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    Log.d("name", name);
+                    if(!name.equals(this_name))
+                        continue;
+                    int isHas = Integer.parseInt(cursor.getString(
+                            cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
+                    Log.d("isHas", ""+isHas);
+                    if(isHas<0){
+                        tel_text.setText("无");
+                    }
+                    else{
+                        Log.d("id", ""+id);
+                        Cursor c = getContentResolver().query(
+                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID+"="+id,
+                                null, null);
+                        Log.d("count", ""+c.getCount());
+                        while (c.moveToNext()){
+                            number += c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))+" ";
+                            Log.d("number", c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                            Log.d("test", "hhh");
+                        }
+                        c.close();
+                        break;
+                    }
+                }
+                if(!number.equals(""))
+                    tel_text.setText(number);
+                else
+                    tel_text.setText("无");
 
 
                 builder.setTitle("<(￣︶￣)>").setPositiveButton("保存修改",

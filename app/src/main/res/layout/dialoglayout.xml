@@ -10,7 +10,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,7 +23,8 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +37,8 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +51,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp"
+        android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,9 +60,9 @@
             android:textColor="@color/telColor"/>
         <TextView
             android:id="@+id/tel_text"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textColor="@color/telColor"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/telColor" />
     </LinearLayout>
 
 </LinearLayout>
