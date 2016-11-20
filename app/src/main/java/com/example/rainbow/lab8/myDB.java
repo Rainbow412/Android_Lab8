@@ -49,7 +49,23 @@ public class myDB extends SQLiteOpenHelper{
         return list;
     }
 
-    public void insert2DB(String name, String bd, String gift){
+    //插入
+    //成功插入时返回0
+    //名字为空时返回1
+    //名字重复时返回2
+    public int insert2DB(String name, String bd, String gift){
+        if(name.equals(""))
+            return 1;
+
+        SQLiteDatabase db1 = getReadableDatabase();
+        Cursor cr = db1.query(TABLE_NAME,
+                new String[]{"name"},
+                null, null, null, null, null);
+        while (cr.moveToNext()){
+            if(cr.getString(0).equals(name))
+                return 2;
+        }
+
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name", name);
@@ -57,6 +73,7 @@ public class myDB extends SQLiteOpenHelper{
         cv.put("gift", gift);
         db.insert(TABLE_NAME,null,cv);
         db.close();
+        return 0;
     }
 
     public void updateDB(String name, String bd, String gift){
@@ -64,10 +81,8 @@ public class myDB extends SQLiteOpenHelper{
         ContentValues cv = new ContentValues();
         cv.put("birth", bd);
         cv.put("gift", gift);
-
         String whereClause = "name=? ";
         String[] whereArgs = {name};
-
         db.update(TABLE_NAME, cv, whereClause, whereArgs);
         db.close();
     }

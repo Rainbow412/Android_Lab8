@@ -34,16 +34,20 @@ public class addActivity extends AppCompatActivity {
                 String bd = bd_edit.getText().toString();
                 String gift = gift_edit.getText().toString();
 
-                if(name.equals("")){
-                    Toast.makeText(addActivity.this, "名字为空，请完善",
-                            Toast.LENGTH_LONG).show();
-                }else{
-                    db.insert2DB(name, bd, gift);
+                int result = db.insert2DB(name, bd, gift);
+                if(result==0){
                     Intent intent = getIntent();
                     setResult(1, intent);
                     finish();
                 }
-
+                else if(result==1){
+                    Toast.makeText(addActivity.this, "名字为空，请完善",
+                            Toast.LENGTH_LONG).show();
+                }
+                else if(result==2){
+                    Toast.makeText(addActivity.this, "名字重复啦，请核查",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 
